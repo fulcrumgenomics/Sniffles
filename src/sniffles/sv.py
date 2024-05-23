@@ -9,6 +9,7 @@
 # Contact:     sniffles@romanek.at
 #
 import logging
+import math
 from dataclasses import dataclass
 from typing import Optional, Callable
 
@@ -49,6 +50,7 @@ class SVCall:
 
     svtype: str
     svlen: int
+    svlen_mean: float
     end: int
     genotypes: dict[int, tuple]
 
@@ -268,6 +270,7 @@ class SVGroup:
 
         svcall_pos = int(util.median(cand.pos for cand in self.candidates))
         svcall_svlen = int(util.median(cand.svlen for cand in self.candidates))
+        svcall_svlen_mean = util.mean(cand.svlen for cand in self.candidates)
         svcall_alt = first_cand.alt
         svcall_alt_mindist = abs(len(svcall_alt) - svcall_svlen)
         if first_cand.svtype == "INS":
@@ -290,6 +293,7 @@ class SVGroup:
                         info=dict(),
                         svtype=first_cand.svtype,
                         svlen=svcall_svlen if config.dev_combine_medians else first_cand.svlen,
+                        svlen_mean=svcall_svlen_mean,
                         end=svcall_end if config.dev_combine_medians else first_cand.end,
                         genotypes=genotypes,
                         precise=sum(int(cand.precise) for cand in self.candidates) / float(len(self.candidates)) > 0.5,
@@ -338,7 +342,7 @@ def call_from(cluster, config, keep_qc_fails, task):
     qc = True
 
     svlen = util.center(v.svlen for v in leads)
-
+    svlen_mean = util.weighted_mean(*zip((v.svlen, v.support) for v in leads))
     if abs(svlen) < config.minsvlen_screen:
         return
 
@@ -392,6 +396,7 @@ def call_from(cluster, config, keep_qc_fails, task):
                     info=dict(),
                     svtype=svtype,
                     svlen=svlen,
+                    svlen_mean=svlen_mean,
                     end=svend,
                     genotypes=dict(),
                     precise=precise,
