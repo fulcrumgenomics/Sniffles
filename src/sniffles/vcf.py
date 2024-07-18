@@ -114,7 +114,7 @@ class VCF:
         self.write_header_line('INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description="Structural variation with imprecise breakpoints">')
         self.write_header_line('INFO=<ID=MOSAIC,Number=0,Type=Flag,Description="Structural variation classified as putative mosaic">')
         self.write_header_line('INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Length of structural variation">')
-        self.write_header_line('INFO=<ID=SVLEN_MEAN,Number=1,Type=Float,Description="Length of structural variation (Mean)">')
+        self.write_header_line('INFO=<ID=SVLENGTH,Number=.,Type=Integer,Description="Lengths of structural variation (all)">')
         self.write_header_line('INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variation">')
         self.write_header_line('INFO=<ID=CHR2,Number=1,Type=String,Description="Mate chromsome for BND SVs">')
         self.write_header_line('INFO=<ID=SUPPORT,Number=1,Type=Integer,Description="Number of reads supporting the structural variation">')
@@ -182,7 +182,7 @@ class VCF:
         infos = {
             "SVTYPE": call.svtype,
             "SVLEN": call.svlen,
-            "SVLEN_MEAN": call.svlen_mean,
+            "SVLENGTHS": call.svlens,
             "END": end,
             "SUPPORT": call.support,
             "RNAMES": call.rnames if self.config.output_rnames else None,
@@ -303,6 +303,9 @@ class VCF:
 
                 if "SVLEN" in info_dict:
                     call.svlen = int(info_dict["SVLEN"])
+                if "SVLENGTHS`" in info_dict:
+                    call.svlens = info_dict["SVLENGTHS"]
+
                 if "END" in info_dict:
                     call.end = int(info_dict["END"])
 
