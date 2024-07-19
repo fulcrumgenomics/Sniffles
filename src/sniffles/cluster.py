@@ -107,7 +107,7 @@ def resplit(cluster, prop, binsize, merge_threshold_min, merge_threshold_frac):
     while len(new_clusters) > 1 and i < len(new_clusters):
         last_cluster = new_clusters[i - 1]
         curr_cluster = new_clusters[i]
-        merge_threshold = max(merge_threshold_min, min(curr_cluster, last_cluster) * merge_threshold_frac)
+        merge_threshold = min(merge_threshold_min, min(curr_cluster, last_cluster) * merge_threshold_frac)
         merge = abs(curr_cluster - last_cluster) <= merge_threshold
         if merge:
             bins_leads[new_clusters[i]].extend(bins_leads[new_clusters[i - 1]])
