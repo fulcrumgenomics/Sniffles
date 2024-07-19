@@ -12,3 +12,5 @@ deploybcm.sh
 resultadoRsync.txt
 .github/
 .github/*
+build/
+.nextflow.log
