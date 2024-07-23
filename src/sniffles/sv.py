@@ -9,7 +9,6 @@
 # Contact:     sniffles@romanek.at
 #
 import logging
-import math
 from dataclasses import dataclass
 from typing import Optional, Callable
 
