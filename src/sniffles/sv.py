@@ -270,9 +270,9 @@ class SVGroup:
 
         svcall_pos = int(util.median(cand.pos for cand in self.candidates))
         svcall_svlen = int(util.median(cand.svlen for cand in self.candidates))
-        svcall_svlens: list[int] = list(length in cand_lengths
+        svcall_svlens: list[int] = [length in cand_lengths
                                         for cand_lengths in self.candidates
-                                        for length in cand_lengths.svlens)
+                                        for length in cand_lengths.svlens]
         svcall_alt = first_cand.alt
         svcall_alt_mindist = abs(len(svcall_alt) - svcall_svlen)
         if first_cand.svtype == "INS":
@@ -344,7 +344,7 @@ def call_from(cluster, config, keep_qc_fails, task):
     qc = True
 
     svlen = util.center(v.svlen for v in leads)
-    svlens = list(v.svlen for v in leads)
+    svlens = [v.svlen for v in leads]
     if abs(svlen) < config.minsvlen_screen:
         return
 

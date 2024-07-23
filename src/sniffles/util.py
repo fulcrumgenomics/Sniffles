@@ -59,11 +59,6 @@ def mean(nums):
     return sum(nums) / len(nums)
 
 
-def weighted_mean(nums, weights):
-    nums = list(nums)
-    return sum([n * w for n, w in zip(nums, weights)]) / sum(weights)
-
-
 def mean_or_none(nums):
     nums = list(nums)
     if len(nums) == 0:
@@ -138,8 +133,7 @@ def load_tandem_repeats(filename, padding):
                 contigs_tr[contig].append((max(0, int(start) - padding), int(end) + padding))
 
     if unsorted:
-        print(
-            "Info: The tandem repeat annotations file was not sorted. Sorting it in-memory after loading... (please sort the .bed file once before to save time when running multiple samples)")
+        print("Info: The tandem repeat annotations file was not sorted. Sorting it in-memory after loading... (please sort the .bed file once before to save time when running multiple samples)")
         sort_start = time.time()
         for contig in contigs_tr:
             contigs_tr[contig].sort()
