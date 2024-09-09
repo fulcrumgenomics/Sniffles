@@ -222,7 +222,7 @@ class VCF:
         infos = {
             "SVTYPE": call.svtype,
             "SVLEN": call.svlen,
-            "SVLENGTHS": call.svlens,
+            "SVLENGTHS": ",".join(str(sv_len) for sv_len in call.svlens),
             "END": end,
             "SUPPORT": call.support,
             "RNAMES": call.rnames if self.config.output_rnames else None,
